@@ -1,3 +1,6 @@
+import { resetLoginForm } from './loginForm'
+import { getMyRecipes } from './myRecipes'
+
 // synchronous action creators
 export const setCurrentUser = user => {
     return {
@@ -14,9 +17,8 @@ export const clearCurrentUser = () => {
 
 // asynchronous action creators
 export const login = credentials => {
-    console.log("credentials are", credentials)
     return dispatch => {
-        return fetch("http://localhost:3001/api/v1/login", {
+        return fetch("http://localhost:3001/login", {
             credentials: "include",
             method: "POST",
             headers: {
@@ -25,11 +27,13 @@ export const login = credentials => {
             body: JSON.stringify(credentials)
         })
         .then(res => res.json())
-        .then(user => {
-            if (user.error) {
-                alert(user.error)
+        .then(response => {
+            if (response.error) {
+                alert(response.error)
             } else {
-                dispatch(setCurrentUser(user))
+                dispatch(setCurrentUser(response.data))
+                dispatch(getMyRecipes())
+                dispatch(resetLoginForm())
             }
         })
         .catch(console.log)
@@ -39,7 +43,7 @@ export const login = credentials => {
 export const logout = () => {
     return dispatch => {
         dispatch(clearCurrentUser())
-        return fetch("http://localhost:3001/api/v1/logout", {
+        return fetch("http://localhost:3001/logout", {
             credentials: "include",
             method: "DELETE"
         })
@@ -47,9 +51,8 @@ export const logout = () => {
 }
 
 export const getCurrentUser = () => {
-    console.log('DISPATCHING GET CURRENT USER')
     return dispatch => {
-        return fetch("http://localhost:3001/api/v1/get_current_user", {
+        return fetch("http://localhost:3001/get_current_user", {
             credentials: "include",
             method: "GET",
             headers: {
@@ -57,12 +60,13 @@ export const getCurrentUser = () => {
             },
         })
         .then(res => res.json())
-        .then(user => {
+        .then(response => {
             // debugger
-            if (user.error) {
-                alert(user.error)
+            if (response.error) {
+                alert(response.error)
             } else {
-                dispatch(setCurrentUser(user))
+                dispatch(setCurrentUser(response.data))
+                dispatch(getMyRecipes())
             }
         })
         .catch(console.log)
