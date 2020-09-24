@@ -16,8 +16,8 @@ const Styles = styled.div`
 
 export const NavBar = () => (
     <Styles>
-        <Navbar expand="lg" fixed="top">
-            <Navbar.Brand href="/">MyFamilyRecipes</Navbar.Brand>
+        <Navbar expand="lg">
+            <Navbar.Brand href="/">My Family's Cookbook</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ml-auto">

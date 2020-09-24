@@ -1,4 +1,4 @@
-// route for error handling
+
 import React from 'react'
 
 export const NoMatch = () => (
