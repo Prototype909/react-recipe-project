@@ -1,4 +1,5 @@
 import { resetLoginForm } from './loginForm'
+import { resetSignupForm } from './signupForm'
 import { getMyRecipes } from './myRecipes'
 
 // synchronous action creators
@@ -16,7 +17,7 @@ export const clearCurrentUser = () => {
 }
 
 // asynchronous action creators
-export const login = credentials => {
+export const login = (credentials, history) => {
     return dispatch => {
         return fetch("http://localhost:3001/login", {
             credentials: "include",
@@ -34,19 +35,48 @@ export const login = credentials => {
                 dispatch(setCurrentUser(response.data))
                 dispatch(getMyRecipes())
                 dispatch(resetLoginForm())
+                history.push('/')
             }
         })
         .catch(console.log)
     }
 }
 
-export const logout = () => {
+export const signup = credentials => {
+    return dispatch => {
+        const userInfo = {
+            user: credentials
+        }
+        return fetch("http://localhost:3001/signup", {
+            credentials: "include",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userInfo)
+        })
+        .then(res => res.json())
+        .then(response => {
+            if (response.error) {
+                alert(response.error)
+            } else {
+                dispatch(setCurrentUser(response.data))
+                dispatch(getMyRecipes())
+                dispatch(resetSignupForm())
+            }
+        })
+        .catch(console.log)
+    }
+}
+
+export const logout = (history) => {
     return dispatch => {
         dispatch(clearCurrentUser())
         return fetch("http://localhost:3001/logout", {
             credentials: "include",
             method: "DELETE"
         })
+        .then(history.push('/'))
     }
 }
 
