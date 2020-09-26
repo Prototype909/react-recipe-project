@@ -1,6 +1,7 @@
 import { resetLoginForm } from './loginForm'
 import { resetSignupForm } from './signupForm'
 import { getMyRecipes } from './myRecipes'
+import { clearRecipes } from './myRecipes'
 
 // synchronous action creators
 export const setCurrentUser = user => {
@@ -42,7 +43,7 @@ export const login = (credentials, history) => {
     }
 }
 
-export const signup = credentials => {
+export const signup = (credentials, history) => {
     return dispatch => {
         const userInfo = {
             user: credentials
@@ -63,20 +64,21 @@ export const signup = credentials => {
                 dispatch(setCurrentUser(response.data))
                 dispatch(getMyRecipes())
                 dispatch(resetSignupForm())
+                history.push('/')
             }
         })
         .catch(console.log)
     }
 }
 
-export const logout = (history) => {
+export const logout = () => {
     return dispatch => {
         dispatch(clearCurrentUser())
+        dispatch(clearRecipes())
         return fetch("http://localhost:3001/logout", {
             credentials: "include",
             method: "DELETE"
         })
-        .then(history.push('/'))
     }
 }
 

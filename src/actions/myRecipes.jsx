@@ -1,4 +1,4 @@
-// synchronus actions
+// synchronus action creators
 export const setMyRecipes = recipes => {
     return {
         type: "SET_MY_RECIPES",
@@ -6,7 +6,19 @@ export const setMyRecipes = recipes => {
     }
 }
 
-// asynchronus actions
+export const clearRecipes = () => {
+    return {
+        type: "CLEAR_RECIPES"
+    }
+}
+
+export const addRecipe = recipe => {
+    return {
+        type: "ADD_RECIPE",
+        recipe
+    }
+}
+// asynchronus action creators
 
 export const getMyRecipes = () => {
     return dispatch => {
@@ -26,5 +38,20 @@ export const getMyRecipes = () => {
             }
         })
         .catch(console.log)
+    }
+}
+
+export const createRecipe = recipeData => {
+    return dispatch => {
+        return fetch("http://localhost:3001/recipes/create", {
+            credentials: "include",    
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: recipeData
+        })
+        .then(resp => resp.json())
+        .then(console.log)
     }
 }

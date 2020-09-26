@@ -2,14 +2,15 @@ import React from 'react';
 import './App.css'
 import NavBar  from './components/NavBar'
 import Home  from './components/Home'
-import Login  from './components/Login'
-import Logout  from './components/Logout'
-import Signup  from './components/Signup'
+import Login  from './components/sessions/Login'
+import Logout  from './components/sessions/Logout'
+import Signup  from './components/sessions/Signup'
 import MyRecipes  from './components/MyRecipes'
+import NewRecipeForm  from './components/containers/NewRecipeForm'
 import { connect } from 'react-redux'
 import { getCurrentUser } from './actions/currentUser'
-import MainContainer from './components/MainContainer';
-import { Route, Switch, withRouter } from 'react-router-dom'
+import MainContainer from './components/containers/MainContainer';
+import { Route, Switch, withRouter, Link } from 'react-router-dom'
 
 class App extends React.Component {
   
@@ -18,19 +19,17 @@ class App extends React.Component {
   }
 
   render () {
+
     const { loggedIn } = this.props
-    debugger
     return (
       <div className="App">
-        <NavBar />
-        { loggedIn ? <Logout history={this.props.history}/> : null}
         <MainContainer />
+        { loggedIn ? <NavBar location={this.props.location}/> : <Home /> }
           <Switch>
-            <Route exact path="/" render={(props) => loggedIn ? <MyRecipes {...props}/> : <Home {...props}/>} />
-            <Route exact path="/signup" component={Signup} />
+            <Route exact path="/signup" render={({ history }) => <Signup history={ history }/>} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/logout" render={(props) => <Logout {...props}/>} />
-            <Route exact path ="/my-recipes" component={MyRecipes}/>
+            <Route exact path ="/myrecipes" component={MyRecipes}/>
+            <Route exact path ="/recipes/new" component={NewRecipeForm}/>
           </Switch>
       </div>
     );

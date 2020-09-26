@@ -1,10 +1,17 @@
-
 .App {
     text-align: center;
 }
 
 .NavBar {
-    /* display: flex;
-    flex-direction: row; */
-    color: red;
-} 
+    display: flex;
+    flex-direction: row;
+    /* position: fixed; */
+}
+
+a.active {
+    color: green;
+}
+
+#loggedin {
+    font-size: 7;
+} 	

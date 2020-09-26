@@ -1,9 +1,10 @@
 import React from 'react'
 // import { Nav, Navbar} from 'react-bootstrap'
 // import styled from 'styled-components'
-import { connect } from 'react-redux'
-import Login from './Login'
+// import Login from './Login'
 import Logout from './Logout'
+import { NavLink } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 // import { getCurrentUser } from '../actions/currentUser'
 
@@ -20,15 +21,13 @@ import Logout from './Logout'
 //     }
 // `;
 
-const NavBar = ({ currentUser }) => {
+const NavBar = ({ currentUser, loggedIn }) => {
 
     return (
         <div className="NavBar">
-            { currentUser ? <p>Welcome, {currentUser.attributes.name}</p> : ""}
-            <button>Log In</button>
-            OR
-            <button>Sign Up</button>
-            { currentUser ? <Logout /> : <Login /> }
+            <NavLink exact activeClassName="active" to="/myrecipes">|  My Recipes  |  </NavLink>
+            <NavLink exact activeClassName="active" to="/recipes/new">|  New Recipe  |  </NavLink>
+            { loggedIn ? <Logout /> : null}
         </div>
     )
     // <Styles>
@@ -47,7 +46,8 @@ const NavBar = ({ currentUser }) => {
 
 const mapStateToProps = ({ currentUser }) => {
     return {
-        currentUser
+        currentUser,
+        loggedIn: !!currentUser
     }
 }
 
