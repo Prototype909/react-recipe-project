@@ -8,8 +8,8 @@ export const updateNewRecipeForm = formData => {
 }
 export const addIngredient = ingredient => {
     return {
-        type: "ADD_INGREDIENT",
-        ingredient
+        type: "UPDATE_INGREDIENT_FORM",
+        formData
     }
 }
 

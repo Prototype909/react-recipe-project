@@ -2,14 +2,15 @@ import React from 'react';
 import './App.css'
 import NavBar  from './components/NavBar'
 import Home  from './components/Home'
-import Login  from './components/sessions/Login'
+// import RecipeShow  from './components/RecipeShow'
+import Login  from './components/Sessions/Login'
 // import Logout  from './components/sessions/Logout'
-import Signup  from './components/sessions/Signup'
-import MyRecipes  from './components/MyRecipes'
-import NewRecipeForm  from './components/containers/NewRecipeForm'
+import Signup  from './components/Sessions/Signup'
+import MyRecipes  from './components/Containers/MyRecipes'
+import RecipeForm  from './components/Containers/RecipeForm'
 import { connect } from 'react-redux'
 import { getCurrentUser } from './actions/currentUser'
-import MainContainer from './components/containers/MainContainer';
+import MainContainer from './components/Containers/MainContainer';
 import { Route, Switch, withRouter } from 'react-router-dom'
 
 class App extends React.Component {
@@ -29,7 +30,9 @@ class App extends React.Component {
             <Route exact path="/signup" render={({ history }) => <Signup history={ history }/>} />
             <Route exact path="/login" component={Login} />
             <Route exact path ="/myrecipes" component={MyRecipes}/>
-            <Route exact path ="/recipes/new" component={NewRecipeForm}/>
+            <Route exact path ="/recipes/new" component={RecipeForm}/>
+            {/* <Route exact path ="/recipes/:id" component={RecipeShow}/> */}
+
           </Switch>
       </div>
     );

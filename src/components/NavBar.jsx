@@ -2,7 +2,7 @@ import React from 'react'
 // import { Nav, Navbar} from 'react-bootstrap'
 // import styled from 'styled-components'
 // import Login from './Login'
-import Logout from './sessions/Logout'
+import Logout from './Sessions/Logout'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 

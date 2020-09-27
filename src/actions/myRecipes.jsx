@@ -1,3 +1,5 @@
+import { resetRecipeForm } from './myIngredients'
+
 // synchronus action creators
 export const setMyRecipes = recipes => {
     return {
@@ -47,13 +49,11 @@ export const getMyRecipes = () => {
 export const createRecipe = recipeData => {
     return dispatch => {
         const sendableRecipeData = {
-            recipe: {
                 name: recipeData.name,
                 image_url: recipeData.imageUrl,
                 description: recipeData.description,
                 instructions: recipeData.instructions,
                 ingredients_attributes: recipeData.ingredients
-            }
         }
         return fetch("http://localhost:3001/recipes", {
             credentials: "include",    
@@ -64,7 +64,16 @@ export const createRecipe = recipeData => {
             body: JSON.stringify(sendableRecipeData)
         })
         .then(resp => resp.json())
-        .then(console.log)
+        .then(resp => {
+            if (resp.error) {
+                alert(resp.error)
+            } else {
+                dispatch(addRecipe(resp.data))
+                // dispatch(resetRecipeForm())
+                // history.push(`/recipes/${resp.data.id}`)
+            }
+            
+        })
         .catch(console.log)
     }
 }
