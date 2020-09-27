@@ -1,37 +1,55 @@
 import React from 'react';
+import './App.scss'
 import './App.css'
 import NavBar  from './components/NavBar'
 import Home  from './components/Home'
-// import RecipeShow  from './components/RecipeShow'
+import RecipeCard  from './components/RecipeCard'
 import Login  from './components/Sessions/Login'
-// import Logout  from './components/sessions/Logout'
+import NoMatch  from './components/NoMatch'
 import Signup  from './components/Sessions/Signup'
 import MyRecipes  from './components/Containers/MyRecipes'
 import RecipeForm  from './components/Containers/RecipeForm'
 import { connect } from 'react-redux'
 import { getCurrentUser } from './actions/currentUser'
 import MainContainer from './components/Containers/MainContainer';
-import { Route, Switch, withRouter } from 'react-router-dom'
+import { Route, Switch, withRouter, Link, Redirect } from 'react-router-dom'
+import { getAllRecipes } from './actions/myRecipes';
 
 class App extends React.Component {
   
   componentDidMount() {
     this.props.getCurrentUser()
+    this.props.getAllRecipes()
   }
 
   render () {
 
-    const { loggedIn } = this.props
+    const { loggedIn, allRecipes } = this.props
     return (
       <div className="App">
         <MainContainer />
-        { loggedIn ? <NavBar location={this.props.location}/> : <Home /> }
+        { loggedIn ? <NavBar location={this.props.location}/> : <h2>To add recipes, please <Link to="/signup">Sign Up</Link> or <Link to="/login">Log In</Link></h2> }
+          
           <Switch>
             <Route exact path="/signup" render={({ history }) => <Signup history={ history }/>} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/no-match" component={NoMatch} />
             <Route exact path ="/myrecipes" component={MyRecipes}/>
             <Route exact path ="/recipes/new" component={RecipeForm}/>
-            {/* <Route exact path ="/recipes/:id" component={RecipeShow}/> */}
+            <Route exact path ="/recipes/:id" render={props => {
+                const recipe = allRecipes.find(recipe => recipe.id === props.match.params.id)
+                console.log(recipe)
+                return <RecipeCard recipe={recipe} {...props}/>
+              }
+            }/>
+            <Route exact path ="/recipes/:id/edit" render={props => {
+                const recipe = allRecipes.find(recipe => recipe.id === props.match.params.id)
+                console.log(recipe)
+                return <RecipeForm recipe={recipe} {...props}/>
+              }
+            }/>
+            <Route exact path="/" component={Home} />
+            <Redirect to="/no-match" />
 
           </Switch>
       </div>
@@ -42,8 +60,10 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: !!state.currentUser
+    loggedIn: !!state.currentUser,
+    // recipes: state.myRecipes,
+    allRecipes: state.myRecipes.allRecipes
   }
 }
 
-export default withRouter(connect(mapStateToProps, { getCurrentUser })(App));
+export default withRouter(connect(mapStateToProps, { getCurrentUser, getAllRecipes })(App));
