@@ -4,28 +4,34 @@ import { createRecipe } from '../../actions/myRecipes'
 
 class RecipeForm extends React.Component {
 
-    state = {
-        name: "",
-        imageUrl: "",
-        description: "",
-        instructions: "",
-        ingredients: [
-            {
-                name: "",
-                quantity: "",
-                unit: ""
-            }
-        ]
+    constructor(props) {
+        super(props)
 
+        this.state = {
+            name: "",
+            imageUrl: "",
+            description: "",
+            instructions: "",
+            ingredients: [
+                {
+                    name: "",
+                    quantity: "",
+                    unit: ""
+                }
+            ]
+        }
     }
+
+
+    
 
     handleChange = e => {
         if (["name", "quantity", "unit"].includes(e.target.className) ) {
             let ingredients = [...this.state.ingredients]
-            ingredients[e.target.dataset.id][e.target.className] = e.target.value.toUpperCase()
+            ingredients[e.target.dataset.id][e.target.className] = e.target.value
             this.setState({ ingredients }, () => console.log(this.state.ingredients))
         } else {
-            this.setState({ [e.target.name]: e.target.value.toUpperCase() })
+            this.setState({ [e.target.name]: e.target.value })
         }
     }
 
@@ -36,53 +42,84 @@ class RecipeForm extends React.Component {
         }))
     }
 
+
     handleSubmit = e => { 
+        // debugger
         e.preventDefault() 
         this.props.createRecipe(this.state)
+        this.props.history.replace(`/myrecipes`)
     }
+
+    // componentDidMount() {
+    //     if (this.props.attributes) {
+    //         const { attributes } = this.props
+    //         this.setState({
+    //             name: attributes.name,
+    //             imageUrl: attributes.image_url,
+    //             description: attributes.description,
+    //             instructions: attributes.instructions,
+    //             ingredients: attributes.ingredients
+
+    //         })
+    //     }
+        
+    // }
 
     render() {
 
-        let { ingredients } = this.state
+        let { name, imageUrl, description, instructions, ingredients } = this.state
         return (
             <form onSubmit={this.handleSubmit} >
             <label>Recipe</label><br />
-                <p>
-                    <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder={"recipe name"}
-                    onChange={this.handleChange}
-                    />
-                </p>
-                <p>
-                    <input
-                    type="text"
-                    name="imageUrl"
-                    id="imageUrl"
-                    placeholder={"imageUrl"}
-                    onChange={this.handleChange}
-                    />
-                </p>
-                <p>
-                    <textarea 
-                    cols="50" 
-                    rows="4"
-                    name="description"
-                    id="description"
-                    placeholder={"description"}
-                    onChange={this.handleChange}></textarea>
-                </p>
-                <p>
-                    <textarea 
-                    cols="50" 
-                    rows="8"
-                    name="instructions"
-                    id="instructions"
-                    placeholder={"instructions"}
-                    onChange={this.handleChange}></textarea>
-                </p>
+                <div className="form-group">
+                    <div className="col-auto">
+                        <input
+                        autoFocus
+                        type="text"
+                        name="name"
+                        id="name"
+                        placeholder={"name"}
+                        onChange={this.handleChange}
+                        value={name}
+                        />
+                    </div>
+                </div>
+                <div className="form-group">
+                    <div className="col-auto">
+                        <input
+                        type="text"
+                        name="imageUrl"
+                        id="imageUrl"
+                        placeholder={"imageUrl"}
+                        onChange={this.handleChange}
+                        value={imageUrl}
+                        />
+                    </div>
+                </div>
+                <div className="form-group">
+                    <div className="col-auto">
+                        <textarea 
+                        cols="50" 
+                        rows="4"
+                        name="description"
+                        id="description"
+                        placeholder={"description"}
+                        onChange={this.handleChange}
+                        value={description}></textarea>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <div className="col-auto">
+                        <textarea 
+                        cols="50" 
+                        rows="8"
+                        name="instructions"
+                        id="instructions"
+                        placeholder={"instructions"}
+                        onChange={this.handleChange}
+                        vale={instructions}></textarea>
+                    </div>
+                </div>
 
                 {
                     ingredients.map((val, idx) => {
@@ -92,50 +129,64 @@ class RecipeForm extends React.Component {
 
                             <div key={idx}>
                                 <label htmlFor={ingId}>{`Ingredient #${idx + 1}`}</label>
-                                <p>
-                                <input
-                                    type="text"
-                                    name={ingId}
-                                    data-id={idx}
-                                    id={ingId}
-                                    className="name"
-                                    placeholder={"name"}
-                                    onChange={this.handleChange}
-                                />
-                                </p>
-                                <p>
-                                <input
-                                    type="text"
-                                    name={quantityId}
-                                    data-id={idx}
-                                    id={quantityId}
-                                    className="quantity"
-                                    placeholder={"quantity"}
-                                    onChange={this.handleChange}
-                                />
-                                </p>
-                                <p>
-                                <input
-                                    type="text"
-                                    name={unitId}
-                                    data-id={idx}
-                                    id={unitId}
-                                    className="unit"
-                                    placeholder={"unit"}
-                                    onChange={this.handleChange}
-                                />
-                                </p>
-
+                                <div className="form-group">
+                                    <div className="col-auto">
+                                        <input
+                                        type="text"
+                                        name={ingId}
+                                        data-id={idx}
+                                        id={ingId}
+                                        className="name"
+                                        placeholder={"name"}
+                                        value={ingredients[idx].name}
+                                        onChange={this.handleChange}
+                                    />
+                                    </div>
+                                </div>
+                            <div className="form-group">
+                                <div className="col-auto">
+                                    <input
+                                        type="text"
+                                        name={quantityId}
+                                        data-id={idx}
+                                        id={quantityId}
+                                        className="quantity"
+                                        placeholder={"quantity"}
+                                        value={ingredients[idx].quantity}
+                                        onChange={this.handleChange}
+                                    />
+                                </div>
                             </div>
+                            <div className="form-group">
+                                <div className="col-auto">
+                                    <input
+                                        type="text"
+                                        name={unitId}
+                                        data-id={idx}
+                                        id={unitId}
+                                        className="unit"
+                                        placeholder={"unit"}
+                                        value={ingredients[idx].unit}
+                                        onChange={this.handleChange}
+                                    />
+                                </div>
+                            </div>
+                        </div>
                         )
                     })
                 }
-                <p><button onClick={this.addIngredient}>Add New Ingredient</button></p>
+                <p><button className="btn btn-secondary" onClick={this.addIngredient}>Add New Ingredient</button></p>
 
-                <input type="submit" value="Create A New Recipe" />
+                <input className="btn btn-primary" type="submit" value="Create A New Recipe" />
                 </form>
         )
     }
 }
 
-export default connect(null, { createRecipe })(RecipeForm) 
+const mapStateToProps = ({ myRecipes }) => {
+    return {
+        myRecipes
+    }
+}
+
+export default connect(mapStateToProps, { createRecipe })(RecipeForm)
