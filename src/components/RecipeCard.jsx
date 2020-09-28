@@ -1,21 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { getRecipe } from '../actions/myRecipes'
 
 
-const RecipeCard = ({ recipe, currentUser }) => {
+const RecipeCard = ({ recipe, currentUser, getRecipe, match }) => {
     
-    const recipeUserId = recipe.relationships.user.data.id
-    const currentUserId = currentUser.id
-    return (
-        recipe ?
-        <div>
+    useEffect(() => {
+        getRecipe(match.params.id)
+    })
+
+    
+        if (recipe){
+            const recipeUserId = recipe.relationships.user.data.id
+            const currentUserId = currentUser.id
+
+            return (
+                <div>
             <h4>{recipe.attributes.name}</h4>
-            <p>{recipe.attributes.imageUrl}</p>
+            <div>
+                <img src={recipe.attributes.image_url} alt="_blank"/>
+            </div>
             <p>{recipe.attributes.description}</p>
             <br />
             <h5>Ingredients:</h5>
-            {console.log(recipe)}
             {recipe.attributes.ingredients.map((ing, idx) => {
                 return (
                     <p key={idx}>
@@ -26,18 +34,19 @@ const RecipeCard = ({ recipe, currentUser }) => {
             <h5>Instructions:</h5>
             <p>{recipe.attributes.instructions}</p>
             {recipeUserId === currentUserId ? <Link to={`/recipes/${recipe.id}/edit`}>Edit This Recipe</Link> : null}
-            
-
-        </div> :
-        <p>This is a recipe card with no recipe</p>
+                </div>
+            )
+            }
+        return <p>This is a recipe card with no recipe</p>
         
-    )
+    
 }
 
 const mapStateToProps = state => {
     return {
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        recipe: state.myRecipes.recipe
     }
 }
 
-export default connect(mapStateToProps, null)(RecipeCard)
+export default connect(mapStateToProps, { getRecipe })(RecipeCard)
