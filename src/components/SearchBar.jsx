@@ -6,10 +6,7 @@ import { getAllRecipeSearchResults } from '../reducers/myRecipes'
 const SearchBar = props => {
     const [ query, setQuery ] = useState("")
     const dispatch = useDispatch()
-    const allRecipes = useSelector(state => state.myRecipes.allRecipes,
-
-    )
-    // debugger
+    const allRecipes = useSelector(state => state.myRecipes.allRecipes)
     const handleChange = e => {
         setQuery(e.target.value)
         dispatch(getAllRecipeSearchResults(query, allRecipes)) 

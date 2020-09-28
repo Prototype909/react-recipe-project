@@ -22,28 +22,6 @@ export const getAllRecipes = () => {
     }
 }
 
-// export const getMyRecipes = () => {
-//     return dispatch => {
-//         return fetch("http://localhost:3001/api/v1/current_user_recipes", {
-//             credentials: "include",
-//             method: "GET",
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//         })
-//         .then(res => res.json())
-//         .then(response => { 
-//             debugger
-//             if (response.error) {
-//                 alert(response.error)
-//             } else {
-//                 dispatch(setMyRecipes(response.data))
-//             }
-//         })
-//         .catch(console.log)
-//     }
-// }
-
 export const getRecipe = id => {    
     return dispatch => {
         return fetch(`http://localhost:3001/recipes/${id}`, {
@@ -67,7 +45,6 @@ export const getRecipe = id => {
 
 export const updateRecipe = (recipeData, history, id) => {
     return dispatch => {
-        // const { currentUser } = getState()
         const sendableRecipeData = {
             name: recipeData.name,
             image_url: recipeData.imageUrl,
@@ -84,9 +61,7 @@ export const updateRecipe = (recipeData, history, id) => {
             body: JSON.stringify(sendableRecipeData)
         })
         .then(res => res.json())
-        .then(response => {
-            // debugger
-            // const userId = response.data.relationships.user.data.id
+        .then(response => {            
             if (response.error) {
                 alert(response.error)
             }  else {
@@ -120,10 +95,7 @@ export const createRecipe = (recipeData, history) => {
             if (resp.error) {
                 alert(resp.error)
             } else {
-                dispatch(addRecipe(resp.data))
-                // dispatch(setAllRecipes(resp.data))
-                // dispatch(setMyRecipes(resp.data.attributes.recipes))
-                // debugger
+                dispatch(addRecipe(resp.data))                
                 history.push("/myrecipes")
             }
             
