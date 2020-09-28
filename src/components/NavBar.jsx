@@ -17,8 +17,11 @@ const Styles = styled.div`
     }
 `;
 
-const NavBar = ({ currentUser, loggedIn, logout }) => {
-
+const NavBar = ({ currentUser, loggedIn, logout, history }) => {
+    const logoutRedirect = () => {
+        logout()
+        history.push('/')
+    }
     
     const renderNavbar = () => {
         if (loggedIn) {
@@ -27,7 +30,7 @@ const NavBar = ({ currentUser, loggedIn, logout }) => {
                 <Nav.Item><Nav.Link href="/">Home</Nav.Link></Nav.Item>
                 <Nav.Item><Nav.Link href="/myrecipes">My Recipes</Nav.Link></Nav.Item> 
                 <Nav.Item><Nav.Link href="/recipes/new">New Recipe</Nav.Link></Nav.Item>
-                <Nav.Item><Nav.Link onClick={logout}>Logout</Nav.Link></Nav.Item>
+                <Nav.Item><Nav.Link onClick={logoutRedirect}>Logout</Nav.Link></Nav.Item>
                 </>
             )
     } else {
@@ -43,7 +46,7 @@ const NavBar = ({ currentUser, loggedIn, logout }) => {
     return (
         <Styles>
         <Navbar expand="lg" fixed="top">
-            <Navbar.Brand href="/">MyFamilyRecipes</Navbar.Brand>
+            <Navbar.Brand href="/">My Family's RecipeBook</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ml-auto">
