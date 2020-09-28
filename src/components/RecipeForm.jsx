@@ -19,10 +19,7 @@ class RecipeForm extends React.Component {
                 }
             ]
         }
-    }
-
-
-    
+    }    
 
     handleChange = e => {
         if (["name", "quantity", "unit"].includes(e.target.className) ) {
@@ -42,12 +39,10 @@ class RecipeForm extends React.Component {
     }
 
 
-    handleSubmit = e => { 
-        // debugger
+    handleSubmit = e => {        
         e.preventDefault() 
         const id = this.props.recipe ? this.props.recipe.id : null
         this.props.onSubmit(this.state, this.props.history, id)
-        // this.props.history.replace(`/myrecipes`)
     }
 
     componentDidMount() {
