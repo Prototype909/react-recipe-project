@@ -1,8 +1,6 @@
 import { resetLoginForm } from './loginForm'
 import { resetSignupForm } from './signupForm'
-import { getMyRecipes } from './myRecipes'
-import { clearRecipes } from './myRecipes'
-import { setMyRecipes} from '../reducers/myRecipes'
+import { setMyRecipes, clearRecipes } from '../reducers/myRecipes'
 
 // synchronous action creators
 export const setCurrentUser = user => {
@@ -63,7 +61,6 @@ export const signup = (credentials, history) => {
                 alert(response.error)
             } else {
                 dispatch(setCurrentUser(response.data))
-                dispatch(getMyRecipes())
                 dispatch(resetSignupForm())
                 history.push('/')
             }
