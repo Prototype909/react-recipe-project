@@ -45,7 +45,8 @@ class RecipeForm extends React.Component {
     handleSubmit = e => { 
         // debugger
         e.preventDefault() 
-        this.props.onSubmit(this.state, this.props.recipe.id, this.props.history)
+        const id = this.props.recipe ? this.props.recipe.id : null
+        this.props.onSubmit(this.state, this.props.history, id)
         // this.props.history.replace(`/myrecipes`)
     }
 
@@ -124,7 +125,6 @@ class RecipeForm extends React.Component {
                         let ingId = `name-${idx}`, quantityId = `quantity-${idx}`, unitId = `unit-${idx}`
 
                         return (
-
                             <div key={idx}>
                                 <label htmlFor={ingId}>{`Ingredient #${idx + 1}`}</label>
                                 <div className="form-group">
