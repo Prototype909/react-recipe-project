@@ -1,4 +1,4 @@
-import { setAllRecipes, setUpdateRecipe, addRecipe } from "../reducers/myRecipes"
+import { setAllRecipes, setUpdateRecipe, addRecipe, fetchRecipe } from "../reducers/myRecipes"
 
 // asynchronus action creators
 export const getAllRecipes = () => {
